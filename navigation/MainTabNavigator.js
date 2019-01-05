@@ -1,14 +1,18 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import {
+  createStackNavigator,
+  createBottomTabNavigator
+} from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import QuizScreen from '../screens/QuizScreen';
 
 const HomeStack = createStackNavigator({
-  Home: HomeScreen,
+  Home: HomeScreen
 });
 
 HomeStack.navigationOptions = {
@@ -22,11 +26,11 @@ HomeStack.navigationOptions = {
           : 'md-information-circle'
       }
     />
-  ),
+  )
 };
 
 const LinksStack = createStackNavigator({
-  Links: LinksScreen,
+  Links: LinksScreen
 });
 
 LinksStack.navigationOptions = {
@@ -36,11 +40,11 @@ LinksStack.navigationOptions = {
       focused={focused}
       name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
     />
-  ),
+  )
 };
 
 const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen,
+  Settings: SettingsScreen
 });
 
 SettingsStack.navigationOptions = {
@@ -50,11 +54,26 @@ SettingsStack.navigationOptions = {
       focused={focused}
       name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
     />
-  ),
+  )
+};
+
+const QuizStack = createStackNavigator({
+  Quiz: QuizScreen
+});
+
+QuizStack.navigationOptions = {
+  tabBarLabel: 'Quiz',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-book' : 'md-book'}
+    />
+  )
 };
 
 export default createBottomTabNavigator({
   HomeStack,
   LinksStack,
   SettingsStack,
+  QuizStack
 });
