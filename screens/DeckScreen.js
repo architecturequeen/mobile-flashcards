@@ -12,11 +12,13 @@ import {
 
 export default class DeckScreen extends React.Component {
   render() {
-    const { deck } = this.props;
+    const deck = this.props.deck || this.props.navigation.state.params.deck;
+
     const { navigate } = this.props.navigation;
     return (
       <ScrollView style={styles.container}>
-        <Text>Deck</Text>
+        <Text>{deck.title}</Text>
+        <Text>{deck.questions.length} cards</Text>
         <Button title="Add Card TODO" onPress={() => {}} />
         <Button
           title="Start Quiz"
@@ -29,24 +31,8 @@ export default class DeckScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingTop: 15,
+    // flex: 1,
+    // paddingTop: 15,
     backgroundColor: '#fff'
   }
 });
-
-DeckScreen.defaultProps = {
-  deck: {
-    title: 'React',
-    questions: [
-      {
-        question: 'What is React?',
-        answer: 'A library for managing user interfaces'
-      },
-      {
-        question: 'Where do you make Ajax requests in React?',
-        answer: 'The componentDidMount lifecycle event'
-      }
-    ]
-  }
-};

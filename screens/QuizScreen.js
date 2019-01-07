@@ -46,16 +46,17 @@ export default class QuizScreen extends React.Component {
   backToDeck = () => {};
 
   submitGuess = result => {
+    const deck = this.props.deck || this.props.navigation.state.params.deck;
     this.setState({
       answers: { ...this.state.answers, [this.state.currQu]: result }
     });
-    if (this.state.currQu < this.props.deck.questions.length - 1) {
+    if (this.state.currQu < deck.questions.length - 1) {
       this.setState({
         currQu: this.state.currQu + 1,
         showAnswer: false
       });
     }
-    if (this.state.currQu === this.props.deck.questions.length - 1) {
+    if (this.state.currQu === deck.questions.length - 1) {
       this.setState({
         endOfQuiz: true
       });
@@ -63,8 +64,10 @@ export default class QuizScreen extends React.Component {
   };
 
   render() {
-    const { deck } = this.props;
-    const totalQu = deck.questions.length;
+    const deck = this.props.deck || this.props.navigation.state.params.deck;
+    const { navigate } = this.props.navigation;
+    const totalQu = deck ? deck.questions.length : 0;
+    if (!deck) return <Text>No Questions on this deck</Text>;
     return (
       <ScrollView style={styles.container}>
         <Text>{deck.title} Quiz!! </Text>
@@ -99,7 +102,10 @@ export default class QuizScreen extends React.Component {
                 You scored {this.getNoCorrectAnswers()} / {totalQu}
               </Text>
               <Button title="Restart Quiz" onPress={this.restartQuiz} />
-              <Button title="Back to Deck (TODO)" onPress={this.backToDeck} />
+              <Button
+                title="Back to Deck"
+                onPress={() => navigate('Deck', { deck: deck })}
+              />
             </View>
           ) : (
             <Text />
@@ -112,24 +118,10 @@ export default class QuizScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingTop: 15,
+    // flex: 1,
+    // paddingTop: 15,
     backgroundColor: '#fff'
   }
 });
 
-QuizScreen.defaultProps = {
-  deck: {
-    title: 'React',
-    questions: [
-      {
-        question: 'What is React?',
-        answer: 'A library for managing user interfaces'
-      },
-      {
-        question: 'Where do you make Ajax requests in React?',
-        answer: 'The componentDidMount lifecycle event'
-      }
-    ]
-  }
-};
+QuizScreen.defaultProps = {};
