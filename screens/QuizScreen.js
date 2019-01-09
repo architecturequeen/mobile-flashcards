@@ -1,14 +1,6 @@
 import React from 'react';
-import {
-  Button,
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
-} from 'react-native';
+import { Button, StyleSheet, Text, View } from 'react-native';
+import * as Data from '../data/Data';
 
 export default class QuizScreen extends React.Component {
   state = {
@@ -67,21 +59,31 @@ export default class QuizScreen extends React.Component {
     const deck = this.props.deck || this.props.navigation.state.params.deck;
     const { navigate } = this.props.navigation;
     const totalQu = deck ? deck.questions.length : 0;
+    //notification logic on completion of quiz
+    if (this.state.endOfQuiz) {
+      Data.clearLocalNotification().then(() => {
+        Data.setLocalNotification();
+      });
+    }
     if (!deck) return <Text>No Questions on this deck</Text>;
     return (
-      <ScrollView style={styles.container}>
-        <Text>{deck.title} Quiz!! </Text>
+      <View style={styles.container}>
+        <Text>{deck.title} Quiz </Text>
         <Text>
           Question {this.state.currQu + 1} / {totalQu}
         </Text>
         {this.state.showAnswer === false ? (
           <View>
-            <Text>{deck.questions[this.state.currQu].question}</Text>
+            <Text style={styles.text}>
+              {deck.questions[this.state.currQu].question}
+            </Text>
             <Button title="Show Answer" onPress={this.onPress} />
           </View>
         ) : (
           <View>
-            <Text>{deck.questions[this.state.currQu].answer}</Text>
+            <Text style={styles.text}>
+              {deck.questions[this.state.currQu].answer}
+            </Text>
             <Button
               disabled={this.state.endOfQuiz}
               title="Correct"
@@ -97,8 +99,8 @@ export default class QuizScreen extends React.Component {
         <View>
           {this.state.endOfQuiz === true ? (
             <View>
-              <Text>You have reached end of quiz</Text>
-              <Text>
+              <Text style={styles.text}>You have reached end of quiz</Text>
+              <Text style={styles.text}>
                 You scored {this.getNoCorrectAnswers()} / {totalQu}
               </Text>
               <Button title="Restart Quiz" onPress={this.restartQuiz} />
@@ -111,16 +113,23 @@ export default class QuizScreen extends React.Component {
             <Text />
           )}
         </View>
-      </ScrollView>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
-    // paddingTop: 15,
-    backgroundColor: '#fff'
+    flex: 1,
+    paddingTop: 70,
+    backgroundColor: '#fff',
+    fontSize: 40,
+    alignItems: 'center'
+  },
+  text: {
+    textAlign: 'center',
+    fontSize: 20,
+    marginBottom: 20
   }
 });
 
