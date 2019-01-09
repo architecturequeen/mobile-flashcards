@@ -11,16 +11,6 @@ import {
 import { WebBrowser } from 'expo';
 
 import { MonoText } from '../components/StyledText';
-import * as Data from '../data/Data';
-
-Data.getDecks()
-  .then(results => {
-    console.log('Data: ', results);
-  })
-  .catch(error => {
-    //this callback is executed when your Promise is rejected
-    console.log('Promise is rejected with error: ' + error);
-  });
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -59,7 +49,7 @@ export default class HomeScreen extends React.Component {
             </View>
 
             <Text style={styles.getStartedText}>
-              wassup Change this text and your app will automatically reload.
+              Change this text and your app will automatically reload.
             </Text>
           </View>
 
